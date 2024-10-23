@@ -2,11 +2,19 @@ import { Controller, Get, Param } from '@nestjs/common';
 
 @Controller()
 export class AppController {
+  // Rota padrão que responde em `localhost:3000`
   @Get()
   getHello(): string {
     return 'Hello World!';
   }
 
+  // Rota para retornar "Hello" + variável
+  @Get('hello/:name')
+  sayHello(@Param('name') name: string): string {
+    return `Hello ${name}!`;
+  }
+
+  // Rota para conversão de temperatura
   @Get('temperature/:valor/:escalaOrigem/:escalaDestino')
   convertTemperature(
     @Param('valor') valor: number,
@@ -16,8 +24,10 @@ export class AppController {
     let resultado: number;
     let mensagem: string;
 
+    // Convertendo valor para número
     const valorNumerico = parseFloat(valor.toString());
-    
+
+    // Verificando a conversão de Celsius para Fahrenheit e vice-versa
     if (escalaOrigem === 'C' && escalaDestino === 'F') {
       resultado = (valorNumerico * 9 / 5) + 32;
       mensagem = `A temperatura ${valorNumerico} C convertida para F é ${resultado.toFixed(2)} F.`;
